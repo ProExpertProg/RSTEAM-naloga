@@ -1,5 +1,6 @@
 package com.govedic.luka.rsteam.listGraphics;
 
+import android.content.Intent;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -7,6 +8,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.bumptech.glide.Glide;
+import com.govedic.luka.rsteam.PluginDetailsActivity;
 import com.govedic.luka.rsteam.R;
 import com.govedic.luka.rsteam.wordpress.WordpressPlugin;
 
@@ -33,5 +35,26 @@ public class WordpressPluginsAdapter extends RecyclerView.Adapter {
     @Override
     public int getItemCount() {
         return mDataset != null ? mDataset.length : 0;
+    }
+
+    public class WordpressPluginViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
+
+        public View mItemView;
+
+        public WordpressPluginViewHolder(View itemView) {
+            super(itemView);
+            mItemView = itemView;
+        }
+
+        @Override
+        public void onClick(View v) {
+            int position = getAdapterPosition();
+            if(position != RecyclerView.NO_POSITION) {
+                WordpressPlugin plugin = mDataset[position];
+                Intent intent = new Intent(mContext, PluginDetailsActivity.class);
+                intent.putExtra(PluginDetailsActivity.EXTRA_PLUGIN, spacePhoto);
+                startActivity(intent);
+            }
+        }
     }
 }
