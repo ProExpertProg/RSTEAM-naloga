@@ -7,6 +7,15 @@ import android.support.v7.widget.RecyclerView;
 
 import com.govedic.luka.rsteam.listGraphics.WordpressPluginsAdapter;
 import com.govedic.luka.rsteam.wordpress.WordpressPlugin;
+import com.govedic.luka.rsteam.wordpress.WordpressPluginInfo;
+import com.govedic.luka.rsteam.wordpress.WordpressWebService;
+
+import java.util.List;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
+import retrofit2.Retrofit;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -20,16 +29,35 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         mRecyclerView = findViewById(R.id.recycler_view);
-
         mLayoutManager = new LinearLayoutManager(this);
         mRecyclerView.setLayoutManager(mLayoutManager);
 
-        // specify an adapter (see also next example)
-        mAdapter = new WordpressPluginsAdapter(getPlugins());
-        mRecyclerView.setAdapter(mAdapter);
+        //prepare the client
+
+        Retrofit retrofit = new Retrofit.Builder()
+                .baseUrl("https://api.wordpress.org/")
+                .build();
+
+        WordpressWebService service = retrofit.create(WordpressWebService.class);
+
+        //number of plugins
+        int numPlugins = 100;
+
+        //get the json data
+        service.pluginInfo(numPlugins).enqueue(new Callback<WordpressPluginInfo>() {
+            @Override
+            public void onResponse(Call<WordpressPluginInfo> call, Response<WordpressPluginInfo> response) {
+                WordpressPlugin[] plugins = (WordpressPlugin[]) response.body().getPlugins().toArray();
+                mAdapter = new WordpressPluginsAdapter(plugins);
+                mRecyclerView.setAdapter(mAdapter);
+            }
+
+            @Override
+            public void onFailure(Call<WordpressPluginInfo> call, Throwable t) {
+                System.err.print(t.getMessage());
+                t.printStackTrace(System.err);
+            }
+        });
     }
 
-    private WordpressPlugin[] getPlugins(){
-        return null;
-    }
 }

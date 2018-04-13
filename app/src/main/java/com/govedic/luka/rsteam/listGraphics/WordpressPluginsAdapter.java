@@ -1,6 +1,7 @@
 package com.govedic.luka.rsteam.listGraphics;
 
 import android.content.Intent;
+import android.os.Parcelable;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -51,8 +52,8 @@ public class WordpressPluginsAdapter extends RecyclerView.Adapter {
             int position = getAdapterPosition();
             if(position != RecyclerView.NO_POSITION) {
                 WordpressPlugin plugin = mDataset[position];
-                Intent intent = new Intent(mContext, PluginDetailsActivity.class);
-                intent.putExtra(PluginDetailsActivity.EXTRA_PLUGIN, spacePhoto);
+                Intent intent = new Intent(mItemView.getContext(), PluginDetailsActivity.class);
+                intent.putExtra(PluginDetailsActivity.EXTRA_PLUGIN, (Parcelable) plugin);
                 startActivity(intent);
             }
         }
