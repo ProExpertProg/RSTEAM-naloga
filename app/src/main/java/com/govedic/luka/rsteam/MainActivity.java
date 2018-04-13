@@ -6,6 +6,7 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 
 import com.govedic.luka.rsteam.listGraphics.WordpressPluginsAdapter;
+import com.govedic.luka.rsteam.wordpress.Plugin;
 import com.govedic.luka.rsteam.wordpress.WordpressPlugin;
 import com.govedic.luka.rsteam.wordpress.WordpressPluginInfo;
 import com.govedic.luka.rsteam.wordpress.WordpressWebService;
@@ -47,7 +48,17 @@ public class MainActivity extends AppCompatActivity {
         service.pluginInfo(numPlugins).enqueue(new Callback<WordpressPluginInfo>() {
             @Override
             public void onResponse(Call<WordpressPluginInfo> call, Response<WordpressPluginInfo> response) {
-                WordpressPlugin[] plugins = (WordpressPlugin[]) response.body().getPlugins().toArray();
+                //get plugins in pojo form
+                List<Plugin> pojoPlugins = response.body().getPlugins();
+
+                //convert them to the desirable form (WordpressPlugin)
+                int count = 0;
+                WordpressPlugin[] plugins = new WordpressPlugin[pojoPlugins.size()];
+                for (Plugin p : pojoPlugins){
+                    plugins[count++] = new WordpressPlugin(p);
+                }
+
+                //fill the recycler view
                 mAdapter = new WordpressPluginsAdapter(plugins);
                 mRecyclerView.setAdapter(mAdapter);
             }

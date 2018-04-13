@@ -10,13 +10,13 @@ public class WordpressPluginInfo {
 
     @SerializedName("plugins")
     @Expose
-    private List<WordpressPlugin> plugins = null;
+    private List<Plugin> plugins = null;
 
-    public List<WordpressPlugin> getPlugins() {
+    public List<Plugin> getPlugins() {
         return plugins;
     }
 
-    public void setPlugins(List<WordpressPlugin> plugins) {
+    public void setPlugins(List<Plugin> plugins) {
         this.plugins = plugins;
     }
 

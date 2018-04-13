@@ -49,12 +49,13 @@ public class WordpressPluginsAdapter extends RecyclerView.Adapter {
 
         @Override
         public void onClick(View v) {
+            //open the details activity
             int position = getAdapterPosition();
             if(position != RecyclerView.NO_POSITION) {
                 WordpressPlugin plugin = mDataset[position];
                 Intent intent = new Intent(mItemView.getContext(), PluginDetailsActivity.class);
                 intent.putExtra(PluginDetailsActivity.EXTRA_PLUGIN, (Parcelable) plugin);
-                startActivity(intent);
+                mItemView.getContext().startActivity(intent);
             }
         }
     }
