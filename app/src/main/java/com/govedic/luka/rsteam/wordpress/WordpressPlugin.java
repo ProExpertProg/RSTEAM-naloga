@@ -34,7 +34,7 @@ public class WordpressPlugin implements Parcelable {
 
     public WordpressPlugin(Plugin plugin) {
         name = plugin.getName();
-        screenshotURL = plugin.getScreenshots().get(0).getSrc();
+        screenshotURL = plugin.getScreenshots().getFirst().getSrc();
         homepageURL = plugin.getHomepage();
         downloadURL = plugin.getDownloadLink();
     }

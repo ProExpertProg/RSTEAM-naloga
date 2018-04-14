@@ -17,7 +17,7 @@ public class Plugin {
     private String downloadLink;
     @SerializedName("screenshots")
     @Expose
-    private List<Screenshot> screenshots;
+    private Screenshots screenshots;
 
 
     public String getName() {
@@ -45,11 +45,11 @@ public class Plugin {
         this.downloadLink = downloadLink;
     }
 
-    public List<Screenshot> getScreenshots() {
+    public Screenshots getScreenshots() {
         return screenshots;
     }
 
-    public void setScreenshots(List<Screenshot> screenshots) {
+    public void setScreenshots(Screenshots screenshots) {
         this.screenshots = screenshots;
     }
 }
