@@ -4,16 +4,17 @@ import android.os.Parcel;
 import android.os.Parcelable;
 
 import java.util.List;
+
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
 
 public class WordpressPlugin implements Parcelable {
 
-    private String name;
-    private String screenshotURL;
-    private String homepageURL;
-    private String downloadURL;
+    public String name;
+    public String screenshotURL;
+    public String homepageURL;
+    public String downloadURL;
 
     public static final Parcelable.Creator CREATOR = new Parcelable.Creator() {
         public WordpressPlugin createFromParcel(Parcel in) {
@@ -34,7 +35,8 @@ public class WordpressPlugin implements Parcelable {
 
     public WordpressPlugin(Plugin plugin) {
         name = plugin.getName();
-        screenshotURL = plugin.getScreenshots().getFirst().getSrc();
+        List<Screenshot> list = plugin.getScreenshots();
+        screenshotURL = list.size() > 0 ? list.get(0).getSrc() : "";
         homepageURL = plugin.getHomepage();
         downloadURL = plugin.getDownloadLink();
     }
@@ -57,5 +59,15 @@ public class WordpressPlugin implements Parcelable {
         dest.writeString(screenshotURL);
         dest.writeString(homepageURL);
         dest.writeString(downloadURL);
+    }
+
+    @Override
+    public String toString() {
+        return "WordpressPlugin{" +
+                "name='" + name + '\'' +
+                ", screenshotURL='" + screenshotURL + '\'' +
+                ", homepageURL='" + homepageURL + '\'' +
+                ", downloadURL='" + downloadURL + '\'' +
+                '}';
     }
 }
