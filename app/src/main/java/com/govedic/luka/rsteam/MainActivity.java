@@ -5,8 +5,13 @@ import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+import com.google.gson.reflect.TypeToken;
 import com.govedic.luka.rsteam.listGraphics.WordpressPluginsAdapter;
+import com.govedic.luka.rsteam.wordpress.JSONObjectLikeListDeserializer;
 import com.govedic.luka.rsteam.wordpress.Plugin;
+import com.govedic.luka.rsteam.wordpress.Screenshot;
 import com.govedic.luka.rsteam.wordpress.WordpressPlugin;
 import com.govedic.luka.rsteam.wordpress.WordpressPluginInfo;
 import com.govedic.luka.rsteam.wordpress.WordpressWebService;
@@ -36,9 +41,16 @@ public class MainActivity extends AppCompatActivity {
 
         //prepare the client
 
+        GsonBuilder gsonBuilder = new GsonBuilder();
+        // Adding custom deserializers
+        gsonBuilder.registerTypeAdapter(new TypeToken<List<Plugin>>(){}.getType(), new JSONObjectLikeListDeserializer<Plugin>());
+        gsonBuilder.registerTypeAdapter(new TypeToken<List<Screenshot>>(){}.getType(), new JSONObjectLikeListDeserializer<Screenshot>());
+        Gson gson = gsonBuilder.create();
+        GsonConverterFactory factory = GsonConverterFactory.create(gson);
+
         Retrofit retrofit = new Retrofit.Builder()
                 .baseUrl("https://api.wordpress.org/")
-                .addConverterFactory(GsonConverterFactory.create())
+                .addConverterFactory(factory)
                 .build();
 
         WordpressWebService service = retrofit.create(WordpressWebService.class);
@@ -56,8 +68,9 @@ public class MainActivity extends AppCompatActivity {
                 //convert them to the desirable form (WordpressPlugin)
                 int count = 0;
                 WordpressPlugin[] plugins = new WordpressPlugin[pojoPlugins.size()];
-                for (Plugin p : pojoPlugins){
-                    plugins[count++] = new WordpressPlugin(p);
+                for (Object p : pojoPlugins){
+                    plugins[count++] = new WordpressPlugin((Plugin) p);
+                    System.out.println(plugins[count-1]);
                 }
 
                 //fill the recycler view
