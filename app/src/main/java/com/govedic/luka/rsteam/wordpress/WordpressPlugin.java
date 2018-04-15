@@ -5,10 +5,6 @@ import android.os.Parcelable;
 
 import java.util.List;
 
-import com.google.gson.annotations.Expose;
-import com.google.gson.annotations.SerializedName;
-
-
 public class WordpressPlugin implements Parcelable {
 
     public String name;
@@ -41,7 +37,7 @@ public class WordpressPlugin implements Parcelable {
         downloadURL = plugin.getDownloadLink();
     }
 
-    public WordpressPlugin(Parcel parcel) {
+    private WordpressPlugin(Parcel parcel) {
         name = parcel.readString();
         screenshotURL = parcel.readString();
         homepageURL = parcel.readString();
