@@ -39,24 +39,16 @@ public class MainActivity extends AppCompatActivity {
         mLayoutManager = new LinearLayoutManager(this);
         mRecyclerView.setLayoutManager(mLayoutManager);
 
-        //prepare the client
-
-        GsonBuilder gsonBuilder = new GsonBuilder();
-        // Adding custom deserializers
-        gsonBuilder.registerTypeAdapter(new TypeToken<List<Plugin>>(){}.getType(), new JSONObjectLikeListDeserializer<Plugin>());
-        gsonBuilder.registerTypeAdapter(new TypeToken<List<Screenshot>>(){}.getType(), new JSONObjectLikeListDeserializer<Screenshot>());
-        Gson gson = gsonBuilder.create();
-        GsonConverterFactory factory = GsonConverterFactory.create(gson);
-
-        Retrofit retrofit = new Retrofit.Builder()
-                .baseUrl("https://api.wordpress.org/")
-                .addConverterFactory(factory)
-                .build();
-
-        WordpressWebService service = retrofit.create(WordpressWebService.class);
+        WordpressWebService service = buildWebService();
 
         //number of plugins
-        int numPlugins = 100;
+        final int numPlugins = 100;
+
+        final WordpressPlugin[] plugins = new WordpressPlugin[numPlugins];
+
+        //fill the recycler view
+        mAdapter = new WordpressPluginsAdapter(plugins);
+        mRecyclerView.setAdapter(mAdapter);
 
         //get the json data
         service.pluginInfo(numPlugins).enqueue(new Callback<WordpressPluginInfo>() {
@@ -67,15 +59,13 @@ public class MainActivity extends AppCompatActivity {
 
                 //convert them to the desirable form (WordpressPlugin)
                 int count = 0;
-                WordpressPlugin[] plugins = new WordpressPlugin[pojoPlugins.size()];
-                for (Object p : pojoPlugins){
-                    plugins[count++] = new WordpressPlugin((Plugin) p);
-                    System.out.println(plugins[count-1]);
-                }
+                if (pojoPlugins.size() > numPlugins)
+                    pojoPlugins = pojoPlugins.subList(0, numPlugins);
 
-                //fill the recycler view
-                mAdapter = new WordpressPluginsAdapter(plugins);
-                mRecyclerView.setAdapter(mAdapter);
+                for (Object p : pojoPlugins) {
+                    plugins[count++] = new WordpressPlugin((Plugin) p);
+                }
+                mAdapter.notifyDataSetChanged();
             }
 
             @Override
@@ -84,6 +74,26 @@ public class MainActivity extends AppCompatActivity {
                 t.printStackTrace(System.err);
             }
         });
+    }
+
+    public WordpressWebService buildWebService() {
+        //prepare the client
+
+        GsonBuilder gsonBuilder = new GsonBuilder();
+        // Adding custom deserializers
+        gsonBuilder.registerTypeAdapter(new TypeToken<List<Plugin>>() {
+        }.getType(), new JSONObjectLikeListDeserializer<Plugin>());
+        gsonBuilder.registerTypeAdapter(new TypeToken<List<Screenshot>>() {
+        }.getType(), new JSONObjectLikeListDeserializer<Screenshot>());
+        Gson gson = gsonBuilder.create();
+        GsonConverterFactory factory = GsonConverterFactory.create(gson);
+
+        Retrofit retrofit = new Retrofit.Builder()
+                .baseUrl("https://api.wordpress.org/")
+                .addConverterFactory(factory)
+                .build();
+
+        return retrofit.create(WordpressWebService.class);
     }
 
 }
