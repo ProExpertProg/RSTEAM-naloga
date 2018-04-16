@@ -43,6 +43,9 @@ public class WordpressPluginsAdapter extends RecyclerView.Adapter {
 
             TextView name = h.mItemView.findViewById(R.id.pluginName);
             name.setText(mDataset[position].name);
+
+            TextView desc = h.mItemView.findViewById(R.id.pluginDescription);
+            desc.setText(mDataset[position].description);
         }
     }
 

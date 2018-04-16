@@ -9,6 +9,9 @@ public class Plugin {
     @SerializedName("name")
     @Expose
     private String name;
+    @SerializedName("short_description")
+    @Expose
+    private String short_description;
     @SerializedName("homepage")
     @Expose
     private String homepage;
@@ -18,6 +21,8 @@ public class Plugin {
     @SerializedName("screenshots")
     @Expose
     private List<Screenshot> screenshots;
+
+
 
 
     public String getName() {
@@ -51,5 +56,13 @@ public class Plugin {
 
     public void setScreenshots(List<Screenshot> screenshots) {
         this.screenshots = screenshots;
+    }
+
+    public String getShort_description() {
+        return short_description;
+    }
+
+    public void setShort_description(String short_description) {
+        this.short_description = short_description;
     }
 }

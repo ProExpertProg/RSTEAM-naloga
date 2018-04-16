@@ -8,6 +8,7 @@ import java.util.List;
 public class WordpressPlugin implements Parcelable {
 
     public String name;
+    public String description;
     public String screenshotURL;
     public String homepageURL;
     public String downloadURL;
@@ -22,8 +23,9 @@ public class WordpressPlugin implements Parcelable {
         }
     };
 
-    public WordpressPlugin(String name, String screenshotURL, String homepageURL, String downloadURL) {
+    public WordpressPlugin(String name, String description, String screenshotURL, String homepageURL, String downloadURL) {
         this.name = name;
+        this.description = description;
         this.screenshotURL = screenshotURL;
         this.homepageURL = homepageURL;
         this.downloadURL = downloadURL;
@@ -31,6 +33,7 @@ public class WordpressPlugin implements Parcelable {
 
     public WordpressPlugin(Plugin plugin) {
         name = plugin.getName();
+        description = plugin.getShort_description();
         List<Screenshot> list = plugin.getScreenshots();
         screenshotURL = list.size() > 0 ? list.get(0).getSrc() : "";
         homepageURL = plugin.getHomepage();
@@ -39,6 +42,7 @@ public class WordpressPlugin implements Parcelable {
 
     private WordpressPlugin(Parcel parcel) {
         name = parcel.readString();
+        description = parcel.readString();
         screenshotURL = parcel.readString();
         homepageURL = parcel.readString();
         downloadURL = parcel.readString();
@@ -52,6 +56,7 @@ public class WordpressPlugin implements Parcelable {
     @Override
     public void writeToParcel(Parcel dest, int flags) {
         dest.writeString(name);
+        dest.writeString(description);
         dest.writeString(screenshotURL);
         dest.writeString(homepageURL);
         dest.writeString(downloadURL);
@@ -61,6 +66,7 @@ public class WordpressPlugin implements Parcelable {
     public String toString() {
         return "WordpressPlugin{" +
                 "name='" + name + '\'' +
+                ", description='" + description + '\'' +
                 ", screenshotURL='" + screenshotURL + '\'' +
                 ", homepageURL='" + homepageURL + '\'' +
                 ", downloadURL='" + downloadURL + '\'' +
