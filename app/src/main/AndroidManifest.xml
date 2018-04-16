@@ -17,7 +17,9 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".PluginDetailsActivity">
+        <activity
+            android:name=".PluginDetailsActivity"
+            android:parentActivityName="com.govedic.luka.rsteam.MainActivity">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.govedic.luka.rsteam.MainActivity" />

@@ -6,4 +6,20 @@
     android:layout_height="match_parent"
     tools:context=".PluginDetailsActivity">
 
+    <Button
+        android:id="@+id/homepage_link"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Plugin homepage"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <ListView
+        android:id="@+id/file_types_list"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/homepage_link" />
 </android.support.constraint.ConstraintLayout>
