@@ -1,3 +1,6 @@
 <resources>
     <string name="app_name">RSTEAM</string>
+    <string name="set_num_plugins">Set number of wordpress plugins to load</string>
+    <string name="save">Save</string>
+    <string name="cancel">Cancel</string>
 </resources>

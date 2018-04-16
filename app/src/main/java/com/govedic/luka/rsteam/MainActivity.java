@@ -1,5 +1,6 @@
 package com.govedic.luka.rsteam;
 
+import android.app.DialogFragment;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.support.v7.app.AppCompatActivity;
@@ -26,11 +27,13 @@ import retrofit2.Response;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
-public class MainActivity extends AppCompatActivity implements NumberOfPluginsDialogFragment.ValueChosenListener{
+public class MainActivity extends AppCompatActivity implements NumberOfPluginsDialogFragment.ValueChosenListener {
 
     private RecyclerView mRecyclerView;
     private RecyclerView.LayoutManager mLayoutManager;
     private RecyclerView.Adapter mAdapter;
+
+    public final static String NUM_PLUGINS_SHARED_PREF_KEY = "NUM_WORDPRESS_PLUGINS_TO_LOAD";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -41,7 +44,18 @@ public class MainActivity extends AppCompatActivity implements NumberOfPluginsDi
         mLayoutManager = new LinearLayoutManager(this);
         mRecyclerView.setLayoutManager(mLayoutManager);
 
-        loadPlugins(100);
+        SharedPreferences sharedPref = getPreferences(Context.MODE_PRIVATE);
+
+        if (sharedPref.contains(NUM_PLUGINS_SHARED_PREF_KEY)) {
+            //if we already know how many plugins to show, then we get the number and load them
+            int numPlugins = sharedPref.getInt(NUM_PLUGINS_SHARED_PREF_KEY, 100);
+            loadPlugins(numPlugins);
+        } else {
+            //otherwise, the user has to enter the number of plugins in our dialog
+            DialogFragment df = new NumberOfPluginsDialogFragment();
+            df.show(getFragmentManager(), "numberOfPlugins");
+        }
+
     }
 
     public WordpressWebService buildWebService() {
@@ -66,14 +80,18 @@ public class MainActivity extends AppCompatActivity implements NumberOfPluginsDi
 
     @Override
     public void onValueChosen(int value) {
+        //save the value of numberOfPlugins
+        SharedPreferences sharedPref = getPreferences(Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = sharedPref.edit();
+        editor.putInt(NUM_PLUGINS_SHARED_PREF_KEY, value);
+        editor.apply();
+
         loadPlugins(value);
     }
 
-    public void loadPlugins(final int numPlugins){
+    public void loadPlugins(final int numPlugins) {
 
         WordpressWebService service = buildWebService();
-
-
         final WordpressPlugin[] plugins = new WordpressPlugin[numPlugins];
 
         //fill the recycler view
@@ -92,8 +110,8 @@ public class MainActivity extends AppCompatActivity implements NumberOfPluginsDi
                 if (pojoPlugins.size() > numPlugins)
                     pojoPlugins = pojoPlugins.subList(0, numPlugins);
 
-                for (Object p : pojoPlugins) {
-                    plugins[count++] = new WordpressPlugin((Plugin) p);
+                for (Plugin p : pojoPlugins) {
+                    plugins[count++] = new WordpressPlugin(p);
                 }
                 mAdapter.notifyDataSetChanged();
             }
