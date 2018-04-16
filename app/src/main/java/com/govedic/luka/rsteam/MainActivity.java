@@ -1,5 +1,7 @@
 package com.govedic.luka.rsteam;
 
+import android.content.Context;
+import android.content.SharedPreferences;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
@@ -24,7 +26,7 @@ import retrofit2.Response;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity implements NumberOfPluginsDialogFragment.ValueChosenListener{
 
     private RecyclerView mRecyclerView;
     private RecyclerView.LayoutManager mLayoutManager;
@@ -39,10 +41,38 @@ public class MainActivity extends AppCompatActivity {
         mLayoutManager = new LinearLayoutManager(this);
         mRecyclerView.setLayoutManager(mLayoutManager);
 
+        loadPlugins(100);
+    }
+
+    public WordpressWebService buildWebService() {
+        //prepare the client
+
+        GsonBuilder gsonBuilder = new GsonBuilder();
+        // Adding custom deserializers
+        gsonBuilder.registerTypeAdapter(new TypeToken<List<Plugin>>() {
+        }.getType(), new JSONObjectLikeListDeserializer<Plugin>());
+        gsonBuilder.registerTypeAdapter(new TypeToken<List<Screenshot>>() {
+        }.getType(), new JSONObjectLikeListDeserializer<Screenshot>());
+        Gson gson = gsonBuilder.create();
+        GsonConverterFactory factory = GsonConverterFactory.create(gson);
+
+        Retrofit retrofit = new Retrofit.Builder()
+                .baseUrl("https://api.wordpress.org/")
+                .addConverterFactory(factory)
+                .build();
+
+        return retrofit.create(WordpressWebService.class);
+    }
+
+    @Override
+    public void onValueChosen(int value) {
+        loadPlugins(value);
+    }
+
+    public void loadPlugins(final int numPlugins){
+
         WordpressWebService service = buildWebService();
 
-        //number of plugins
-        final int numPlugins = 100;
 
         final WordpressPlugin[] plugins = new WordpressPlugin[numPlugins];
 
@@ -75,25 +105,4 @@ public class MainActivity extends AppCompatActivity {
             }
         });
     }
-
-    public WordpressWebService buildWebService() {
-        //prepare the client
-
-        GsonBuilder gsonBuilder = new GsonBuilder();
-        // Adding custom deserializers
-        gsonBuilder.registerTypeAdapter(new TypeToken<List<Plugin>>() {
-        }.getType(), new JSONObjectLikeListDeserializer<Plugin>());
-        gsonBuilder.registerTypeAdapter(new TypeToken<List<Screenshot>>() {
-        }.getType(), new JSONObjectLikeListDeserializer<Screenshot>());
-        Gson gson = gsonBuilder.create();
-        GsonConverterFactory factory = GsonConverterFactory.create(gson);
-
-        Retrofit retrofit = new Retrofit.Builder()
-                .baseUrl("https://api.wordpress.org/")
-                .addConverterFactory(factory)
-                .build();
-
-        return retrofit.create(WordpressWebService.class);
-    }
-
 }
