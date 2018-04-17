@@ -1,4 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="plugin_homepage_button">Odpri povezavo</string>
+    <string name="set_num_plugins">Nastavi število wordpress pluginov, ki jih želiš prikazati</string>
+    <string name="save">Shrani</string>
+    <string name="cancel">Prekliči</string>
 </resources>
