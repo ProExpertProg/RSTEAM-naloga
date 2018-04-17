@@ -21,14 +21,14 @@ import java.util.Set;
 public class JSONObjectLikeListDeserializer<T> implements JsonDeserializer<List<T>> {
     @Override
     public List<T> deserialize(JsonElement json, Type typeOfT, JsonDeserializationContext context) throws JsonParseException {
-        //Get the type of the list elements so that we can deserialize them individually later
+        // Get the type of the list elements so that we can deserialize them individually later
         Type typeOfElem = ((ParameterizedType) typeOfT).getActualTypeArguments()[0];
 
         List<T> list = new ArrayList<>();
 
         if (json.isJsonNull()) return list;
         else if (json.isJsonArray()) {
-            //if array, parse as normal list
+            // If array, parse as normal list
             JsonArray array = json.getAsJsonArray();
 
             for(JsonElement jElem : array) {
@@ -38,9 +38,9 @@ public class JSONObjectLikeListDeserializer<T> implements JsonDeserializer<List<
             return list;
 
         } else if (json.isJsonObject()) {
-            //if object, fill the list with elements and check for integer indexes
+            // If object, fill the list with elements and check for integer indexes
             JsonObject obj = json.getAsJsonObject();
-            Set<Map.Entry<String, JsonElement>> entries = obj.entrySet(); //will return members of the object
+            Set<Map.Entry<String, JsonElement>> entries = obj.entrySet(); // Will return members of the object
             for (Map.Entry<String, JsonElement> entry : entries) {
                 String name = entry.getKey();
 

@@ -106,6 +106,8 @@ public class MainActivity extends AppCompatActivity implements NumberOfPluginsDi
 
                 //convert them to the desirable form (WordpressPlugin)
                 int count = 0;
+
+                //just in case more plugins were loaded than necessary, cut the redundant part
                 if (pojoPlugins.size() > numPlugins)
                     pojoPlugins = pojoPlugins.subList(0, numPlugins);
 

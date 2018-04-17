@@ -16,7 +16,7 @@ public class NumberOfPluginsDialogFragment extends DialogFragment {
     // Use this instance of the interface to deliver action events
     ValueChosenListener mListener;
 
-    // Override the Fragment.onAttach() method to instantiate the NoticeDialogListener
+    // Override the Fragment.onAttach() method to instantiate the ValueChosenListener
     @Override
     public void onAttach(Activity activity) {
         super.onAttach(activity);
@@ -33,7 +33,7 @@ public class NumberOfPluginsDialogFragment extends DialogFragment {
 
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
-        //initialize the number picker
+        // Initialize the number picker
         final NumberPicker numberPicker = new NumberPicker(getActivity());
         numberPicker.setMinValue(1);
         numberPicker.setMaxValue(100);

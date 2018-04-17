@@ -26,7 +26,7 @@ import java.util.zip.ZipInputStream;
 public class PluginDetailsActivity extends AppCompatActivity implements View.OnClickListener {
 
     public static final String EXTRA_PLUGIN = "PluginDetailsActivity.EXTRA_PLUGIN";
-    private WordpressPlugin plugin;
+    private WordpressPlugin mPlugin;
     private ArrayAdapter<String> mAdapter;
 
     @Override
@@ -34,9 +34,9 @@ public class PluginDetailsActivity extends AppCompatActivity implements View.OnC
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_plugin_details);
 
-        plugin = getIntent().getExtras().getParcelable(EXTRA_PLUGIN);
+        mPlugin = getIntent().getExtras().getParcelable(EXTRA_PLUGIN);
         Button btn = findViewById(R.id.homepage_link);
-        if (plugin.homepageURL == null || plugin.homepageURL.isEmpty()) {
+        if (mPlugin.homepageURL == null || mPlugin.homepageURL.isEmpty()) {
             //invalid link, hide the button
             ViewGroup parent = (ViewGroup) btn.getParent();
             parent.removeView(btn);
@@ -51,13 +51,13 @@ public class PluginDetailsActivity extends AppCompatActivity implements View.OnC
         lv.setAdapter(mAdapter);
 
         System.out.println("Invoking download");
-        downloadAndTraverseZip(plugin.downloadURL);
+        downloadAndTraverseZip(mPlugin.downloadURL);
     }
 
     //when the homepage button is clicked
     @Override
     public void onClick(View v) {
-        String url = plugin.homepageURL;
+        String url = mPlugin.homepageURL;
         Intent i = new Intent(Intent.ACTION_VIEW);
         i.setData(Uri.parse(url));
         startActivity(i);
