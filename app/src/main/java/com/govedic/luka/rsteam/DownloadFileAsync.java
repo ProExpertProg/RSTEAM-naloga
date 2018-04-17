@@ -5,10 +5,9 @@ import android.util.Log;
 
 import java.io.BufferedInputStream;
 import java.io.File;
-import java.io.FileDescriptor;
 import java.io.FileOutputStream;
+import java.io.IOException;
 import java.io.InputStream;
-import java.io.OutputStream;
 import java.net.URL;
 import java.net.URLConnection;
 
@@ -19,11 +18,10 @@ public class DownloadFileAsync extends AsyncTask<String, String, String> {
 
     private static final String TAG = "DOWNLOADFILE";
 
-    public static final int DIALOG_DOWNLOAD_PROGRESS = 0;
     private PostDownload callback;
     private File downloadLocation;
 
-    public DownloadFileAsync(File downloadLocation, PostDownload callback) {
+    DownloadFileAsync(File downloadLocation, PostDownload callback) {
         this.callback = callback;
         this.downloadLocation = downloadLocation;
     }
@@ -48,7 +46,7 @@ public class DownloadFileAsync extends AsyncTask<String, String, String> {
             InputStream input = new BufferedInputStream(url.openStream());
             FileOutputStream output = new FileOutputStream(downloadLocation); //context.openFileOutput("content.zip", Context.MODE_PRIVATE);
             Log.d(TAG, "file saved at " + downloadLocation.getAbsolutePath());
-            FileDescriptor fd = output.getFD();
+            //FileDescriptor fd = output.getFD();
 
             byte data[] = new byte[1024];
             long total = 0;
@@ -61,7 +59,8 @@ public class DownloadFileAsync extends AsyncTask<String, String, String> {
             output.flush();
             output.close();
             input.close();
-        } catch (Exception e) {
+        } catch (IOException e) {
+            e.printStackTrace();
         }
         return null;
 

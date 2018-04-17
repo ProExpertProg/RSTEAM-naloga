@@ -27,7 +27,7 @@ public class PluginDetailsActivity extends AppCompatActivity implements View.OnC
 
     public static final String EXTRA_PLUGIN = "PluginDetailsActivity.EXTRA_PLUGIN";
     private WordpressPlugin plugin;
-    private ArrayAdapter mAdapter;
+    private ArrayAdapter<String> mAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -47,7 +47,7 @@ public class PluginDetailsActivity extends AppCompatActivity implements View.OnC
 
         System.out.println("Preping the list");
         ListView lv = findViewById(R.id.file_types_list);
-        mAdapter = new ArrayAdapter(this, R.layout.zip_list_item, R.id.zip_text_view, new ArrayList<String>());
+        mAdapter = new ArrayAdapter<>(this, R.layout.zip_list_item, R.id.zip_text_view, new ArrayList<String>());
         lv.setAdapter(mAdapter);
 
         System.out.println("Invoking download");

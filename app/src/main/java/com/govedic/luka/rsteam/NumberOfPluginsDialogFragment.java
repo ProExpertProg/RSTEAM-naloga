@@ -10,7 +10,7 @@ import android.widget.NumberPicker;
 
 public class NumberOfPluginsDialogFragment extends DialogFragment {
     public interface ValueChosenListener {
-        public void onValueChosen(int value);
+        void onValueChosen(int value);
     }
 
     // Use this instance of the interface to deliver action events

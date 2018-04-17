@@ -23,14 +23,6 @@ public class WordpressPlugin implements Parcelable {
         }
     };
 
-    public WordpressPlugin(String name, String description, String screenshotURL, String homepageURL, String downloadURL) {
-        this.name = name;
-        this.description = description;
-        this.screenshotURL = screenshotURL;
-        this.homepageURL = homepageURL;
-        this.downloadURL = downloadURL;
-    }
-
     public WordpressPlugin(Plugin plugin) {
         name = plugin.getName();
         description = plugin.getShort_description();

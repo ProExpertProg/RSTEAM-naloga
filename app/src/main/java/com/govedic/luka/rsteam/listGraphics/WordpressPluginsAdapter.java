@@ -2,7 +2,6 @@ package com.govedic.luka.rsteam.listGraphics;
 
 import android.content.Context;
 import android.content.Intent;
-import android.os.Parcelable;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -56,10 +55,10 @@ public class WordpressPluginsAdapter extends RecyclerView.Adapter {
 
     public class WordpressPluginViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
 
-        public View mItemView;
-        public Context mContext;
+        View mItemView;
+        Context mContext;
 
-        public WordpressPluginViewHolder(Context ctx, View itemView) {
+        WordpressPluginViewHolder(Context ctx, View itemView) {
             super(itemView);
             mItemView = itemView;
             mContext = ctx;
@@ -73,7 +72,7 @@ public class WordpressPluginsAdapter extends RecyclerView.Adapter {
             if (position != RecyclerView.NO_POSITION) {
                 WordpressPlugin plugin = mDataset[position];
                 Intent intent = new Intent(mItemView.getContext(), PluginDetailsActivity.class);
-                intent.putExtra(PluginDetailsActivity.EXTRA_PLUGIN, (Parcelable) plugin);
+                intent.putExtra(PluginDetailsActivity.EXTRA_PLUGIN, plugin);
                 mItemView.getContext().startActivity(intent);
             }
         }

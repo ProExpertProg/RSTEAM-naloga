@@ -3,6 +3,7 @@ package com.govedic.luka.rsteam;
 import android.app.DialogFragment;
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
@@ -30,7 +31,6 @@ import retrofit2.converter.gson.GsonConverterFactory;
 public class MainActivity extends AppCompatActivity implements NumberOfPluginsDialogFragment.ValueChosenListener {
 
     private RecyclerView mRecyclerView;
-    private RecyclerView.LayoutManager mLayoutManager;
     private RecyclerView.Adapter mAdapter;
 
     public final static String NUM_PLUGINS_SHARED_PREF_KEY = "NUM_WORDPRESS_PLUGINS_TO_LOAD";
@@ -41,8 +41,7 @@ public class MainActivity extends AppCompatActivity implements NumberOfPluginsDi
         setContentView(R.layout.activity_main);
 
         mRecyclerView = findViewById(R.id.recycler_view);
-        mLayoutManager = new LinearLayoutManager(this);
-        mRecyclerView.setLayoutManager(mLayoutManager);
+        mRecyclerView.setLayoutManager(new LinearLayoutManager(this));
 
         SharedPreferences sharedPref = getPreferences(Context.MODE_PRIVATE);
 
@@ -101,7 +100,7 @@ public class MainActivity extends AppCompatActivity implements NumberOfPluginsDi
         //get the json data
         service.pluginInfo(numPlugins).enqueue(new Callback<WordpressPluginInfo>() {
             @Override
-            public void onResponse(Call<WordpressPluginInfo> call, Response<WordpressPluginInfo> response) {
+            public void onResponse(@NonNull Call<WordpressPluginInfo> call, @NonNull Response<WordpressPluginInfo> response) {
                 //get plugins in pojo form
                 List<Plugin> pojoPlugins = response.body().getPlugins();
 
@@ -117,7 +116,7 @@ public class MainActivity extends AppCompatActivity implements NumberOfPluginsDi
             }
 
             @Override
-            public void onFailure(Call<WordpressPluginInfo> call, Throwable t) {
+            public void onFailure(@NonNull Call<WordpressPluginInfo> call, @NonNull Throwable t) {
                 System.err.print(t.getMessage());
                 t.printStackTrace(System.err);
             }
